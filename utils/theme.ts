@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-export const C = { bg: '#0B0B0C', card: '#17171A', line: '#2A2A2E', text: '#FFFFFF', sub: '#9A9AA2', accent: '#FF4D3D' };
+export const C = { bg: '#0B0B0C', card: '#17171A', line: '#2A2A2E', text: '#FFFFFF', sub: '#9A9AA2', accent: '#ff3d3d' };
 export const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: C.bg },
   pad: { padding: 20, paddingBottom: 48 },
