@@ -1,16 +1,18 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import Btn from '../components/Btn';
-import MockupViewer from '../components/MockupViewer';
-import { useDraft } from '../context/DraftContext';
-import { findTemplate } from '../data/shirtTemplates';
-import { clamp, clampPosition, MAX_SCALE, MIN_SCALE } from '../utils/mockupUtils';
-import { s } from '../utils/theme';
+import Btn from '@/components/Btn';
+import MockupViewer from '@/components/MockupViewer';
+import { useDraft } from '@/context/DraftContext';
+import { findTemplate } from '@/data/shirtTemplates';
+import { clamp, clampPosition, MAX_SCALE, MIN_SCALE } from '@/utils/mockupUtils';
+import { s } from '@/utils/theme';
 
 const POS_STEP = 0.03;
 const SCALE_STEP = 0.1;
 
-export default function MockupEditorScreen({ navigation }: any) {
+export default function MockupEditorScreen() {
+  const router = useRouter();
   const { draft, update } = useDraft();
   const tpl = findTemplate(draft.type, draft.color);
   if (!tpl || !draft.designUri || !draft.designSize || !draft.size) {
@@ -44,7 +46,7 @@ export default function MockupEditorScreen({ navigation }: any) {
           <Btn small ghost title="Reset" onPress={() => update({ position: { x: 0, y: 0 }, scale: 1 })} />
         </View>
       </View>
-      <Btn title="Konfirmasi Design" onPress={() => navigation.navigate('OrderConfirmation')} />
+      <Btn title="Konfirmasi Design" onPress={() => router.push('/order-confirmation')} />
     </ScrollView>
   );
 }

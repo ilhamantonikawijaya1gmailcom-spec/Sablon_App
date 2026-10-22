@@ -1,16 +1,17 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
-import { OrderMockup } from '../components/MockupViewer';
-import { fmtDate } from '../components/OrderCard';
-import StatusTimeline from '../components/StatusTimeline';
-import { getOrder } from '../services/orderStorage';
-import { Order } from '../types/order';
-import { s } from '../utils/theme';
+import { OrderMockup } from '@/components/MockupViewer';
+import { fmtDate } from '@/components/OrderCard';
+import StatusTimeline from '@/components/StatusTimeline';
+import { getOrder } from '@/services/orderStorage';
+import { Order } from '@/types/order';
+import { s } from '@/utils/theme';
 
-export default function OrderDetailScreen({ route }: any) {
+export default function OrderDetailScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const [o, setO] = useState<Order | null>(null);
-  useFocusEffect(useCallback(() => { getOrder(route.params.id).then(setO); }, []));
+  useFocusEffect(useCallback(() => { getOrder(id).then(setO); }, [id]));
   if (!o) return <View style={s.screen} />;
   const row = (k: string, v: string) => <Text style={s.txt}><Text style={{ color: '#9A9AA2' }}>{k}: </Text>{v || '-'}</Text>;
   return (

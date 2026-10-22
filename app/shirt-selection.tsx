@@ -1,20 +1,22 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import Btn from '../components/Btn';
-import ShirtSelector from '../components/ShirtSelector';
-import SizeSelector from '../components/SizeSelector';
-import { useDraft } from '../context/DraftContext';
-import { findTemplate } from '../data/shirtTemplates';
-import { s } from '../utils/theme';
+import Btn from '@/components/Btn';
+import ShirtSelector from '@/components/ShirtSelector';
+import SizeSelector from '@/components/SizeSelector';
+import { useDraft } from '@/context/DraftContext';
+import { findTemplate } from '@/data/shirtTemplates';
+import { s } from '@/utils/theme';
 
-export default function ShirtSelectionScreen({ navigation }: any) {
+export default function ShirtSelectionScreen() {
+  const router = useRouter();
   const { draft, update } = useDraft();
   const [err, setErr] = useState('');
   const tpl = findTemplate(draft.type, draft.color);
   const next = () => {
     if (!draft.type || !draft.color) return setErr('Pilih model dan warna kaos.');
     if (!draft.size) return setErr('Pilih ukuran.');
-    setErr(''); navigation.navigate('UploadDesign');
+    setErr(''); router.push('/upload-design');
   };
   const setModel = (p: any) => {
     const t = findTemplate(p.type ?? draft.type, p.color ?? draft.color);

@@ -1,13 +1,15 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, ScrollView, Text, TextInput, View } from 'react-native';
-import Btn from '../components/Btn';
-import MockupViewer from '../components/MockupViewer';
-import { useDraft } from '../context/DraftContext';
-import { findTemplate } from '../data/shirtTemplates';
-import { createOrder } from '../services/orderStorage';
-import { C, s } from '../utils/theme';
+import Btn from '@/components/Btn';
+import MockupViewer from '@/components/MockupViewer';
+import { useDraft } from '@/context/DraftContext';
+import { findTemplate } from '@/data/shirtTemplates';
+import { createOrder } from '@/services/orderStorage';
+import { C, s } from '@/utils/theme';
 
-export default function OrderConfirmationScreen({ navigation }: any) {
+export default function OrderConfirmationScreen() {
+  const router = useRouter();
   const { draft, reset } = useDraft();
   const tpl = findTemplate(draft.type, draft.color);
   const [qty, setQty] = useState(1);
@@ -29,7 +31,7 @@ export default function OrderConfirmationScreen({ navigation }: any) {
         mockupData: { templateId: tpl.id, x: draft.position.x, y: draft.position.y, scale: draft.scale, designWidth: draft.designSize!.w, designHeight: draft.designSize!.h },
       });
       reset();
-      navigation.replace('OrderSuccess', { id: order.id });
+      router.replace({ pathname: '/order-success', params: { id: order.id } });
     } catch {
       setErr('Gagal menyimpan pesanan. Coba lagi.'); setBusy(false);
     }
