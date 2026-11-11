@@ -28,6 +28,8 @@ export default function RootLayout() {
         <Stack.Screen name="orders/index" options={{ title: 'Pesanan Saya' }} />
         <Stack.Screen name="orders/[id]" options={{ title: 'Detail Pesanan' }} />
         <Stack.Screen name="admin" options={{ title: 'Admin' }} />
+        {/* Route group (info) tidak muncul di URL: tetap /bantuan. Dibuka sebagai modal, header diatur layout bantuan sendiri. */}
+        <Stack.Screen name="(info)/bantuan" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
     </DraftProvider>
   );

@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text } from 'react-native';
 import Btn from '@/components/Btn';
@@ -21,7 +21,10 @@ export default function OrderSuccessScreen() {
       <OrderStatus status={o.status} />
       <Text style={[s.sub, { marginVertical: 12 }]}>{o.shirtModel} · Size {o.size} · Qty {o.quantity}</Text>
       <OrderMockup order={o} />
-      <Btn title="Lihat Pesanan" onPress={() => router.replace('/orders')} />
+      <Link href={{ pathname: '/orders/[id]', params: { id: o.id } }} asChild>
+        <Btn title="Lihat Detail Pesanan" />
+      </Link>
+      <Btn title="Lihat Semua Pesanan" ghost onPress={() => router.replace('/orders')} />
       <Btn title="Kembali ke Beranda" ghost onPress={() => router.replace('/')} />
     </ScrollView>
   );
