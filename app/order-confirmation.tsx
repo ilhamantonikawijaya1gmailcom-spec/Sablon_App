@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Image, ScrollView, Text, TextInput, View } from 'react-native';
 import Btn from '@/components/Btn';
 import MockupViewer from '@/components/MockupViewer';
@@ -7,6 +7,8 @@ import { useDraft } from '@/context/DraftContext';
 import { findTemplate } from '@/data/shirtTemplates';
 import { createOrder } from '@/services/orderStorage';
 import { C, s } from '@/utils/theme';
+
+type InputRef = React.ComponentRef<typeof TextInput>;
 
 export default function OrderConfirmationScreen() {
   const router = useRouter();
@@ -16,6 +18,9 @@ export default function OrderConfirmationScreen() {
   const [f, setF] = useState({ name: '', phone: '', address: '', notes: '' });
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  // useRef: simpan referensi input agar tombol "Next" di keyboard bisa pindah fokus (tanpa re-render).
+  const phoneRef = useRef<InputRef>(null);
+  const addressRef = useRef<InputRef>(null);
   if (!tpl || !draft.designUri || !draft.designSize || !draft.size) {
     return <View style={[s.screen, s.pad]}><Text style={s.sub}>Data pesanan belum lengkap.</Text></View>;
   }
@@ -54,9 +59,11 @@ export default function OrderConfirmationScreen() {
         <Text style={s.txt}>{qty}</Text>
         <Btn small ghost title="+" onPress={() => setQty(qty + 1)} />
       </View>
-      <TextInput style={s.input} placeholder="Nama" placeholderTextColor={ph} value={f.name} onChangeText={set('name')} />
-      <TextInput style={s.input} placeholder="Nomor WhatsApp" placeholderTextColor={ph} keyboardType="phone-pad" value={f.phone} onChangeText={set('phone')} />
-      <TextInput style={[s.input, { height: 80 }]} multiline placeholder="Alamat" placeholderTextColor={ph} value={f.address} onChangeText={set('address')} />
+      <TextInput style={s.input} placeholder="Nama" placeholderTextColor={ph} value={f.name} onChangeText={set('name')}
+        returnKeyType="next" onSubmitEditing={() => phoneRef.current?.focus()} />
+      <TextInput ref={phoneRef} style={s.input} placeholder="Nomor WhatsApp" placeholderTextColor={ph} keyboardType="phone-pad" value={f.phone} onChangeText={set('phone')}
+        returnKeyType="next" onSubmitEditing={() => addressRef.current?.focus()} />
+      <TextInput ref={addressRef} style={[s.input, { height: 80 }]} multiline placeholder="Alamat" placeholderTextColor={ph} value={f.address} onChangeText={set('address')} />
       <TextInput style={[s.input, { height: 80 }]} multiline placeholder="Catatan" placeholderTextColor={ph} value={f.notes} onChangeText={set('notes')} />
       {!!err && <Text style={s.err}>{err}</Text>}
       <Btn title={busy ? 'Mengirim...' : 'Kirim Pesanan'} disabled={busy} onPress={submit} />

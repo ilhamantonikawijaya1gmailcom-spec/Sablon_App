@@ -2,8 +2,9 @@ import React from 'react';
 import { Pressable, Text } from 'react-native';
 import { C } from '../utils/theme';
 
+// onPress opsional: bila dibungkus <Link asChild>, Link yang menyuntikkan onPress sendiri.
 export default function Btn({ title, onPress, ghost, disabled, small }: {
-  title: string; onPress: () => void; ghost?: boolean; disabled?: boolean; small?: boolean;
+  title: string; onPress?: () => void; ghost?: boolean; disabled?: boolean; small?: boolean;
 }) {
   return (
     <Pressable

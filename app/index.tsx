@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 import Btn from '@/components/Btn';
@@ -14,7 +14,13 @@ export default function HomeScreen() {
       <Text style={[s.h1, { fontSize: 38, marginVertical: 12 }]}>Design Your Own Shirt</Text>
       <Text style={[s.sub, { marginBottom: 24 }]}>Upload desainmu, lihat mockup, lalu pesan.</Text>
       <Btn title="Mulai Design" onPress={() => { reset(); router.push('/shirt-selection'); }} />
-      <Btn title="Pesanan Saya" ghost onPress={() => router.push('/orders')} />
+      {/* Navigasi deklaratif dengan <Link>; asChild = tampilan tetap memakai tombol Btn. */}
+      <Link href="/orders" asChild>
+        <Btn title="Pesanan Saya" ghost />
+      </Link>
+      <Link href="/bantuan" asChild>
+        <Btn title="Bantuan" ghost />
+      </Link>
       <View style={{ marginTop: 32, alignItems: 'center' }}>
         <Btn title="Admin" ghost small onPress={() => router.push('/admin')} />
       </View>
