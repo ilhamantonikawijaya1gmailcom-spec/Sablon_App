@@ -24,10 +24,11 @@ export default function ShirtSelectionScreen() {
   };
   return (
     <ScrollView style={s.screen} contentContainerStyle={s.pad}>
+      <Btn title="Lanjutkan" onPress={next} />
       <ShirtSelector type={draft.type} color={draft.color} onType={(type) => setModel({ type })} onColor={(color) => setModel({ color })} />
       <SizeSelector value={draft.size} available={tpl?.availableSizes} onChange={(size) => update({ size })} />
       {!!err && <Text style={s.err}>{err}</Text>}
-      <Btn title="Lanjutkan" onPress={next} />
+      
     </ScrollView>
   );
 }

@@ -14,6 +14,7 @@ export default function HomeScreen() {
       <Text style={[s.h1, { fontSize: 38, marginVertical: 12 }]}>Design Your Own Shirt</Text>
       <Text style={[s.sub, { marginBottom: 24 }]}>Upload desainmu, lihat mockup, lalu pesan.</Text>
       <Btn title="Mulai Design" onPress={() => { reset(); router.push('/shirt-selection'); }} />
+      <Btn title="Tombol Baru" onPress={() => { reset(); router.push('/page_baru'); }} />
       <Btn title="Pesanan Saya" ghost onPress={() => router.push('/orders')} />
       <View style={{ marginTop: 32, alignItems: 'center' }}>
         <Btn title="Admin" ghost small onPress={() => router.push('/admin')} />
