@@ -15,6 +15,9 @@ export default function HomeScreen() {
       <Text style={[s.sub, { marginBottom: 24 }]}>Upload desainmu, lihat mockup, lalu pesan.</Text>
       <Btn title="Mulai Design" onPress={() => { reset(); router.push('/shirt-selection'); }} />
       {/* Navigasi deklaratif dengan <Link>; asChild = tampilan tetap memakai tombol Btn. */}
+      <Link href="/inspirasi" asChild>
+        <Btn title="Inspirasi Kaos" ghost />
+      </Link>
       <Link href="/orders" asChild>
         <Btn title="Pesanan Saya" ghost />
       </Link>
