@@ -37,7 +37,7 @@ export default function AdminScreen() {
           </OrderCard>
         );
       })}
-      <Btn title="Kembali" ghost onPress={goBack} />
+      <Btn title="back" ghost onPress={goBack} />
     </ScrollView>
   );
 }
