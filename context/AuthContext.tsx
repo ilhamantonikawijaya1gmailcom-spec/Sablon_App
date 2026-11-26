@@ -24,13 +24,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // 1. Rehidrasi sesi dari SecureStore saat aplikasi pertama kali dibuka
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('[AuthContext] Cek sesi awal:', session ? `Aktif (${session.user.email})` : 'Kosong');
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
     });
 
-    // 2. Real-time subscription untuk perubahan status auth (SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    // 2. Real-time Session Subscription
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[AuthContext] Event Real-time:', event, '| User:', session?.user?.email ?? 'null');
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
@@ -40,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscription.unsubscribe();
     };
   }, []);
-
+// Demo4 Global AuthContext & Real-time Session
   const signOut = async () => {
     await supabase.auth.signOut();
   };
