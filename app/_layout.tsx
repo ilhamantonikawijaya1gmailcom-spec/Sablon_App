@@ -1,13 +1,38 @@
-import { Stack } from 'expo-router';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
 import { DraftProvider } from '@/context/DraftContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { C } from '@/utils/theme';
 
-// Root layout: dibungkus DraftProvider (useContext) lalu semua halaman dikelola oleh <Stack>.
-export default function RootLayout() {
+function RootLayoutNav() {
+  const { user, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!user && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (user && inAuthGroup) {
+      router.replace('/');
+    }
+  }, [user, isLoading, segments]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.bg }}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
+
   return (
-    <DraftProvider>
+    <>
       <StatusBar style="light" />
       <Stack
         screenOptions={{
@@ -16,6 +41,7 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: C.bg },
         }}
       >
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="shirt-selection" options={{ title: 'Pilih Baju' }} />
         <Stack.Screen name="upload-design" options={{ title: 'Upload Design' }} />
@@ -33,6 +59,17 @@ export default function RootLayout() {
         {/* Route group (info) tidak muncul di URL: tetap /bantuan. Dibuka sebagai modal, header diatur layout bantuan sendiri. */}
         <Stack.Screen name="(info)/bantuan" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
-    </DraftProvider>
+    </>
+  );
+}
+
+// Root layout: dibungkus AuthProvider & DraftProvider lalu semua halaman dikelola oleh <Stack>.
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <DraftProvider>
+        <RootLayoutNav />
+      </DraftProvider>
+    </AuthProvider>
   );
 }
